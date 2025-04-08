@@ -9,7 +9,7 @@ const App = () => {
   const [message, setMessage] = useState('')
   const [error, setError] = useState(false)
 
-  const timeout = 3000
+  const timeout = 6000
 
   useEffect(()=>{
     personsService
@@ -67,7 +67,7 @@ const App = () => {
   }
 
   const handleNameChange = (event) => {
-    console.log(event.target.value)
+    //console.log(event.target.value)
     setNewName(event.target.value)
   }
   
@@ -77,7 +77,7 @@ const App = () => {
 
   const handleFilterChange = (event) => {
     setFilter(event.target.value)
-    console.log(event.target.value)
+    //console.log(event.target.value)
   }
 
   const addName = (event) =>{
@@ -90,11 +90,19 @@ const App = () => {
     personsService
       .create(nameObject)
         .then(returnedList => {
-        setPersons(persons.concat(returnedList))
-        setNewName('')
-        setNewNumber('')
-        setMessage(`Added ${nameObject.name}`)
+          setPersons(persons.concat(returnedList))
+          setNewName('')
+          setNewNumber('')
+          setMessage(`Added ${nameObject.name}`)
+          setTimeout(()=>{
+            setMessage('')
+          }, timeout)
+      }).catch(error =>{
+        console.error(error.response.data)
+        setError(true)
+        setMessage(error.response.data.error)
         setTimeout(()=>{
+          setError(false)
           setMessage('')
         }, timeout)
       })
